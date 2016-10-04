@@ -35,3 +35,12 @@ let p5 = merge.submit('task-xyz');
 
 
 ```
+
+## Important
+
+Do not use arrow function as worker when create Merge like below
+```
+let merge = new Merge((resolve, reject) => {
+    //error, because the task will be passed by "this", and "this" will not be bined in arrow function.
+})
+```
