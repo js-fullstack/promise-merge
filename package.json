@@ -1,0 +1,29 @@
+{
+  "name": "promise-merge",
+  "version": "1.0.0",
+  "description": "Submit task and return promise at once, and merge duplecated promises into one promise. All of promises will be resolve/reject if merged promised resolved/rejected.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/js-fullstack/promise-merge.git"
+  },
+  "keywords": [
+    "promise",
+    "merge"
+  ],
+  "author": "shenyu1997",
+  "license": "MIT ",
+  "bugs": {
+    "url": "https://github.com/js-fullstack/promise-merge/issues"
+  },
+  "homepage": "https://github.com/js-fullstack/promise-merge#readme",
+  "dependencies": {
+    "def-schema": "^1.0.1"
+  }
+}

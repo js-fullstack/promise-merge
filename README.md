@@ -13,7 +13,7 @@ let Merge = require('merge');
 
 let merge = new Merge(function(resolve, reject) {
    let task = this.task;
-   //do something asyncnise
+
    asyncall('somewhere', (err, data) => {
        if(err) {
            reject(err);
