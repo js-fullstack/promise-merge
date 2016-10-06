@@ -1,6 +1,6 @@
 # promise-merge
 
-Submit task and return promise at once, and merge duplecated promises into one promise. All of promises will be resolve/reject if merged promised resolved/rejected.
+Submit task and return promise at once, and merge duplecated promises into one promise before first promise resolved/rejected. All of promises will be resolve/reject if merged promised resolved/rejected.
 
 ## install
 
