@@ -15,19 +15,21 @@ class Merge {
 
         if(this.tasks[task] === undefined) {
             this.tasks[task] = new Promise((resolve, reject) => {
-                let clean = (fn) => {
-                    return (r) => {
-                        delete this.tasks[task];
-                        clearTimeout(tm);
-                        fn(r);
-                    }
-                }
-                let tm = setTimeout(clean(reject),this.timeout,'ETIMEOUT');
+                let cleanup = (fn, args) => {
+                    cleanup = () => {};
+                    delete this.tasks[task];
+                    clearTimeout(tm);
+                    fn(args);
+                };
+                let wrapedResolve = (r) => cleanup(resolve, r);
+                let wrapedReject = (e) => cleanup(reject, e);
+
+                let tm = setTimeout(wrapedReject,this.timeout,Error('ETIMEOUT'));
                 process.nextTick(() => {
                     try {
-                        this.worker.call(undefined, task, clean(resolve), clean(reject));
+                        this.worker.call(undefined, task, wrapedResolve, wrapedReject);
                     } catch(e) {
-                        clean(reject)(e);
+                        wrapedReject(e);
                     }
                 });
             });
