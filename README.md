@@ -1,6 +1,8 @@
 # promise-merge
 
-Consolidate Promise with the same task and not complete. For example, merge same HTTP call in same promise before it resolved/rejected.
+Consolidate Promise with the same task and not complete.
+
+For example, merge same HTTP call in same promise before it resolved/rejected.
 
 ## install
 
