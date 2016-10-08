@@ -13,10 +13,8 @@ npm install promise-merged
 ```
 let Merge = require('merge');
 
-let merge = new Merge(function(resolve, reject) {
-   let task = this.task;
-
-   asyncall('somewhere', (err, data) => {
+let merge = new Merge(function(task, resolve, reject) {
+   asynCall('somewhere', (err, data) => {
        if(err) {
            reject(err);
        }
