@@ -1,6 +1,6 @@
 {
   "name": "promise-merge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Submit task and return promise at once, and merge duplecated promises into one promise. All of promises will be resolve/reject if merged promised resolved/rejected.",
   "main": "index.js",
   "directories": {
