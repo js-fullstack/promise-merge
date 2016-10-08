@@ -21,15 +21,15 @@ class Merge {
                     clearTimeout(tm);
                     fn(args);
                 };
-                let wrapedResolve = (r) => cleanup(resolve, r);
-                let wrapedReject = (e) => cleanup(reject, e);
+                let wrappedResolve = (r) => cleanup(resolve, r);
+                let wrappedReject = (e) => cleanup(reject, e);
 
-                let tm = setTimeout(wrapedReject,this.timeout,Error('ETIMEOUT'));
+                let tm = setTimeout(wrappedReject,this.timeout,Error('ETIMEOUT'));
                 process.nextTick(() => {
                     try {
-                        this.worker.call(undefined, task, wrapedResolve, wrapedReject);
+                        this.worker.call(undefined, task, wrappedResolve, wrappedReject);
                     } catch(e) {
-                        wrapedReject(e);
+                        wrappedReject(e);
                     }
                 });
             });
