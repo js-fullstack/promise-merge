@@ -1,6 +1,6 @@
 # promise-merge
 
-Submit task and return promise at once, and merge duplecated promises into one promise before first promise resolved/rejected. All of promises will be resolve/reject if merged promised resolved/rejected.
+Consolidate Promise with the same task and not complete. For example, merge same HTTP call in same promise before it resolved/rejected.
 
 ## install
 
@@ -24,23 +24,14 @@ let merge = new Merge(function(resolve, reject) {
 
 
 let p1 = merge.submit('task-abc');
-let p2 = merge.submit('task-abc');
-let p3 = merge.submit('task-xyz');
-let p4 = merge.submit('task-abc');
-let p5 = merge.submit('task-xyz');
-
-//p1 !== p2 !== p3 !== p4 !== p5
-//p1, p2, p4 will resolve/reject at same time, because they are same tasks;
-//p3, p5 will resolve/reject at same time, because they are same tasks;
+let p2 = merge.submit('task-abc'); // suppose p1 is still in pending status, then p2 === p1
+let p3 = merge.submit('task-xyz'); // p3 is new promise
+let p4 = merge.submit('task-abc'); // suppose p1 is completed now (resolved/rejected), then p4 !== p1
+let p5 = merge.submit('task-xyz');  //suppose p3 is still in pending status, then p5 === p3
 
 
 ```
 
 ## Important
 
-Do not use arrow function as worker when create Merge like below
-```
-let merge = new Merge((resolve, reject) => {
-    //error, because the task will be passed by "this", and "this" will not be bined in arrow function.
-})
-```
+Only support ES6.
