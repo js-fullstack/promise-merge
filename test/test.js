@@ -1,42 +1,7 @@
 'use strict'
 const assert = require('assert');
 const Merge = require("../index");
-
-class Trace {
-    constructor(){
-        this.steps = [];
-        this.verified = false;
-    }
-
-    wrap(done) {
-        return (e) => {
-            if(this.verified) {
-                done(e);
-            } else if(e){
-                done(e);
-            } else {
-                done(Error(`trace was defined but was not be verified`));
-            }
-        }
-    }
-
-    step(name, executor) {
-        this.steps.push(name);
-        if(typeof executor === 'function') {
-            return executor();
-        }
-    }
-
-    verify(...steps) {
-        this.verified = true;
-        assert.deepEqual(steps, this.steps);
-    }
-
-    like(...steps) {
-        this.verified = true;
-        assert.deepEqual(this.steps.sort(), steps.sort());
-    }
-}
+const Trace = require("trace-step");
 
 describe('Happy path', () => {
     it('merge task into same promise',done => {
@@ -56,7 +21,7 @@ describe('Happy path', () => {
         assert.equal(m.size,1);
         Promise.all([p1,p2,p3,p4]).then((rs) => {
             rs.forEach(r => assert.equal(r, 'a'));
-        	t.verify(1);
+        	t.match(1);
         	assert.equal(m.size,0);
         }).then(done, done);
     });
@@ -86,7 +51,7 @@ describe('Happy path', () => {
         });
         Promise.all([p12, p34]).then(()=>{
             assert.equal(m.size, 0);
-            t.like(1,2,1,3);
+            t.resemble(1,2,1,3);
         }).then(done, done);
     });
 
@@ -131,7 +96,7 @@ describe('Happy path', () => {
         assert.equal(m.size,1);
         Promise.all([p1,p2,p3,p4]).then((rs) => {
         	assert.equal(m.size,0);
-        	t.like(0,1,2,3,4);
+        	t.resemble(0,1,2,3,4);
         }).then(done, done);
     });
 });
@@ -145,7 +110,7 @@ describe('exception', () => {
         done = t.wrap(done);
         m.submit('a')
             .catch(e => t.step(1, () => assert.equal(e, 'err')))
-            .then(() => {assert.equal(m.size, 0); t.verify(1);})
+            .then(() => {assert.equal(m.size, 0); t.match(1);})
             .then(done, done);
 
     });
@@ -163,7 +128,7 @@ describe('timeout', () => {
             .catch(e => {
                 assert.equal(m.size, 0);
                 assert.equal(e.message, 'ETIMEOUT');
-                t.verify(1);
+                t.match(1);
             })
             .then(done, done)
     });
@@ -201,7 +166,7 @@ describe('timeout', () => {
             }).then((r) => {
                 assert.equal(r, 'aa');
                 assert.equal(m.size, 0);
-                t.verify(0, 3, 0, 1, 4, 2);
+                t.match(0, 3, 0, 1, 4, 2);
             })
             .then(done, done)
     });
